@@ -42,7 +42,7 @@ public class FortniteAPIHandler {
     private static final String USER_AGENT = "Mozilla/5.0";
     private static final int HTTP_BUFFER_LENGTH = 1024;
     
-    private final String apiBase = "https://fortnite-public-api.theapinetwork.com/prod09/";
+    private final String apiBase = "https://fortnite-public-api.theapinetwork.com/prod09";
     
     public JSONObject apiCall(String resource, JSONObject body, String method) {
         JSONObject obj = new JSONObject();
@@ -57,7 +57,7 @@ public class FortniteAPIHandler {
             
             connection.setRequestProperty("User-Agent",USER_AGENT);   
             connection.setRequestMethod(method);
-            if(method.equals("PUT")) {
+            if(method.equals("PUT") || method.equals("POST")) {
                 connection.setDoOutput(true);
                 connection.setRequestProperty("Content-Length",Integer.toString(body.toJSONString().length()));
                 connection.getOutputStream().write(body.toJSONString().getBytes("UTF-8"));

@@ -106,7 +106,7 @@ public class HueLight implements ControllableLight {
 
     @Override
     public int getBrightness() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return (int)((long)state.get("bri"));
     }
 
     @Override
@@ -144,12 +144,32 @@ public class HueLight implements ControllableLight {
 
     @Override
     public int getHue() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return (int)((long)state.get("hue"));
     }
 
+    public String getHueColorName() {
+        int hue = getHue();
+        hue = (int)(hue * (360.0f/(float)getMaxHue()));
+        if(hue<=14 || hue>=345) return "RED";
+        if(hue==15) return "REDDISH";
+        if(hue>=16&&hue<=45) return "ORANGE";
+        if(hue>=46&&hue<=70) return "YELLOW";
+        if(hue>=71&&hue<=79) return "LIME";
+        if(hue>=80&&hue<=163) return "GREEN";
+        if(hue>=164&&hue<=193) return "CYAN";
+        if(hue>=194&&hue<=240) return "BLUE";
+        if(hue>=241&&hue<=260) return "INDIGO";
+        if(hue>=261&&hue<=270) return "VIOLET";
+        if(hue>=271&&hue<=291) return "PURPLE";
+        if(hue>=292&&hue<=327) return "MAGENTA";
+        if(hue>=328&&hue<=344) return "ROSE";
+        
+        return "UNKNOWN";
+    }
+    
     @Override
     public int getSat() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return (int)((long)state.get("sat"));
     }
 
     @Override

@@ -44,7 +44,7 @@ public class FortniteAPIHandler {
     
     private final String apiBase = "https://fortnite-public-api.theapinetwork.com/prod09/";
     
-    JSONObject apiCall(String resource, JSONObject body, String method) {
+    public JSONObject apiCall(String resource, JSONObject body, String method) {
         JSONObject obj = new JSONObject();
         try {
             System.out.println("Requesting " + this.apiBase + "/" + resource + " with method " + method);

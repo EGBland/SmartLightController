@@ -54,7 +54,7 @@ public class HueLight implements ControllableLight {
     
     public void update() {
         JSONObject obj = handler.apiCall("lights/"+this.id,new JSONObject(),"GET");
-        System.out.println(obj.toJSONString());
+        //System.out.println(obj.toJSONString());
         update((JSONObject)obj.get("response"));
     }
     
@@ -77,16 +77,18 @@ public class HueLight implements ControllableLight {
     public void turnOn() {
         JSONObject json = new JSONObject();
         json.put("on",true);
-        System.out.println(json.toJSONString());
-        System.out.println(handler.apiCall("lights/" + id + "/state",json,"PUT").toJSONString());
+        //System.out.println(json.toJSONString());
+        JSONObject response = handler.apiCall("lights/" + id + "/state",json,"PUT");
+        //System.out.println(response.toJSONString());
     }
 
     @Override
     public void turnOff() {
         JSONObject json = new JSONObject();
         json.put("on",false);
-        System.out.println(json.toJSONString());
-        System.out.println(handler.apiCall("lights/" + id + "/state",json,"PUT").toJSONString());
+        //System.out.println(json.toJSONString());
+        JSONObject response = handler.apiCall("lights/" + id + "/state",json,"PUT");
+        //System.out.println(response.toJSONString());
     }
 
     @Override
@@ -94,14 +96,20 @@ public class HueLight implements ControllableLight {
         //System.out.println(state.toJSONString());
         return (boolean)state.get("on");
     }
+    
+    @Override
+    public boolean isReachable() {
+        return (boolean)state.get("reachable");
+    }
 
     @Override
     public void setBrightness(int brightness) {
         if(brightness<getMinBrightness() || brightness>getMaxBrightness()) throw new IllegalArgumentException("Brightness out of range.");
         JSONObject json = new JSONObject();
         json.put("bri",brightness);
-        System.out.println(json.toJSONString());
-        System.out.println(handler.apiCall("lights/" + id + "/state",json,"PUT").toJSONString());
+        //System.out.println(json.toJSONString());
+        JSONObject response = handler.apiCall("lights/" + id + "/state",json,"PUT");
+        //System.out.println(response.toJSONString());
     }
 
     @Override
@@ -129,8 +137,9 @@ public class HueLight implements ControllableLight {
         if(hue<getMinHue() || hue>getMaxHue()) throw new IllegalArgumentException("Hue out of range. (" + hue + ")");
         JSONObject json = new JSONObject();
         json.put("hue",hue);
-        System.out.println(json.toJSONString());
-        System.out.println(handler.apiCall("lights/" + id + "/state",json,"PUT").toJSONString());
+        //System.out.println(json.toJSONString());
+        JSONObject response = handler.apiCall("lights/" + id + "/state",json,"PUT");
+        //System.out.println(response.toJSONString());
     }
 
     @Override
@@ -138,8 +147,9 @@ public class HueLight implements ControllableLight {
         if(sat<getMinSat() || sat>getMaxSat()) throw new IllegalArgumentException("Saturation out of range.");
         JSONObject json = new JSONObject();
         json.put("sat",sat);
-        System.out.println(json.toJSONString());
-        System.out.println(handler.apiCall("lights/" + id + "/state",json,"PUT").toJSONString());
+        //System.out.println(json.toJSONString());
+        JSONObject response = handler.apiCall("lights/" + id + "/state",json,"PUT");
+        //System.out.println(response.toJSONString());
     }
 
     @Override

@@ -36,6 +36,7 @@ public interface ControllableLight {
     public void turnOn();
     public void turnOff();
     public boolean isOn();
+    public boolean isReachable();
     
     public void setBrightness(int brightness);
     public int getBrightness();

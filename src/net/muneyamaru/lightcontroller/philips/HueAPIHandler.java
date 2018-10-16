@@ -55,7 +55,7 @@ public class HueAPIHandler {
     JSONObject apiCall(String resource, JSONObject body, String method) {
         JSONObject obj = new JSONObject();
         try {
-            System.out.println("Requesting " + this.apiBase + "/" + resource + " with method " + method);
+            //System.out.println("Requesting " + this.apiBase + "/" + resource + " with method " + method);
             final URL url = new URL(this.apiBase + "/" + resource);
             HttpURLConnection connection = (HttpURLConnection)url.openConnection();
             

@@ -124,7 +124,7 @@ public class HueLight implements ControllableLight {
 
     @Override
     public int getMaxBrightness() {
-        return 255;
+        return 254;
     }
 
     @Override
@@ -189,7 +189,7 @@ public class HueLight implements ControllableLight {
 
     @Override
     public int getMaxHue() {
-        return 65535;
+        return 65534;
     }
 
     @Override
@@ -199,6 +199,36 @@ public class HueLight implements ControllableLight {
 
     @Override
     public int getMaxSat() {
-        return 255;
+        return 254;
+    }
+
+    @Override
+    public void setCanonicalBrightness(float bri) {
+        this.setBrightness((int)(bri * getMaxBrightness()));
+    }
+
+    @Override
+    public float getCanonicalBrightness() {
+        return (float)getBrightness()/getMaxBrightness();
+    }
+
+    @Override
+    public void setCanonicalHue(float hue) {
+        this.setHue((int)(hue * getMaxHue()));
+    }
+
+    @Override
+    public float getCanonicalHue() {
+        return (float)getHue()/getMaxHue();
+    }
+
+    @Override
+    public void setCanonicalSat(float sat) {
+        this.setSat((int)sat * getMaxSat());
+    }
+
+    @Override
+    public float getCanonicalSat() {
+        return (float)getSat()/getMaxSat();
     }
 }

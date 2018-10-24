@@ -42,13 +42,20 @@ public interface ControllableLight {
     public int getBrightness();
     public int getMinBrightness();
     public int getMaxBrightness();
+    public void setCanonicalBrightness(float bri);
+    public float getCanonicalBrightness();
     
     public void setHue(int hue);
-    public void setSat(int sat);
     public int getHue();
-    public int getSat();
     public int getMinHue();
     public int getMaxHue();
+    public void setCanonicalHue(float hue);
+    public float getCanonicalHue();
+    
+    public void setSat(int sat);
+    public int getSat();
     public int getMinSat();
     public int getMaxSat();
+    public void setCanonicalSat(float sat);
+    public float getCanonicalSat();
 }

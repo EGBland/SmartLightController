@@ -58,4 +58,11 @@ public interface ControllableLight {
     public int getMaxSat();
     public void setCanonicalSat(float sat);
     public float getCanonicalSat();
+    
+    public void setTransitionTime(long ttmillis);
+    public long getTransitionTime();
+    
+    public void setLive(boolean isLive);
+    public boolean getLive();
+    public void flush();
 }

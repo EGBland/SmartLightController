@@ -57,7 +57,7 @@ public class PhilipsHueController {
     public List<HueLight> getLights() {
         List<HueLight> ret = new ArrayList<>();
         JSONObject response = handler.apiCall("lights", new JSONObject(), "GET");
-        System.out.println(response.toJSONString());
+        //System.out.println(response.toJSONString());
         JSONObject data = (JSONObject)response.get("response");
         
         data.entrySet().forEach((pair) -> {

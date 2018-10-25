@@ -38,6 +38,9 @@ public class HueLight implements ControllableLight {
     private final String bridgeIP;
     private final HueAPIHandler handler;
     private final String base;
+    private int transitionTime = 4;
+    private boolean isLive = true;
+    private JSONObject queuedRequest = new JSONObject();
     
     private String name = "";
     private JSONObject state = new JSONObject();
@@ -48,6 +51,8 @@ public class HueLight implements ControllableLight {
         this.bridgeIP = bridgeIP;
         this.handler = handler;
         this.base = "http://" + this.bridgeIP + "/api/" + this.user + "/" + this.id;
+        
+        this.queuedRequest.put("transitiontime",transitionTime);
         
         update(lightJson);
     }
@@ -75,25 +80,18 @@ public class HueLight implements ControllableLight {
     
     @Override
     public void turnOn() {
-        JSONObject json = new JSONObject();
-        json.put("on",true);
-        //System.out.println(json.toJSONString());
-        JSONObject response = handler.apiCall("lights/" + id + "/state",json,"PUT");
-        //System.out.println(response.toJSONString());
+        queuedRequest.put("on",true);
+        if(isLive) flush();
     }
 
     @Override
     public void turnOff() {
-        JSONObject json = new JSONObject();
-        json.put("on",false);
-        //System.out.println(json.toJSONString());
-        JSONObject response = handler.apiCall("lights/" + id + "/state",json,"PUT");
-        //System.out.println(response.toJSONString());
+        queuedRequest.put("on",false);
+        if(isLive) flush();
     }
 
     @Override
     public boolean isOn() {
-        //System.out.println(state.toJSONString());
         return (boolean)state.get("on");
     }
     
@@ -104,12 +102,8 @@ public class HueLight implements ControllableLight {
 
     @Override
     public void setBrightness(int brightness) {
-        if(brightness<getMinBrightness() || brightness>getMaxBrightness()) throw new IllegalArgumentException("Brightness out of range.");
-        JSONObject json = new JSONObject();
-        json.put("bri",brightness);
-        //System.out.println(json.toJSONString());
-        JSONObject response = handler.apiCall("lights/" + id + "/state",json,"PUT");
-        //System.out.println(response.toJSONString());
+        queuedRequest.put("bri",brightness);
+        if(isLive) flush();
     }
 
     @Override
@@ -134,22 +128,15 @@ public class HueLight implements ControllableLight {
 
     @Override
     public void setHue(int hue) {
-        if(hue<getMinHue() || hue>getMaxHue()) throw new IllegalArgumentException("Hue out of range. (" + hue + ")");
-        JSONObject json = new JSONObject();
-        json.put("hue",hue);
-        //System.out.println(json.toJSONString());
-        JSONObject response = handler.apiCall("lights/" + id + "/state",json,"PUT");
-        //System.out.println(response.toJSONString());
+        if(hue<getMinHue() || hue>getMaxHue()) throw new IllegalArgumentException("Hue out of range.");
+        queuedRequest.put("hue",hue);
+        if(isLive) flush();
     }
 
     @Override
     public void setSat(int sat) {
         if(sat<getMinSat() || sat>getMaxSat()) throw new IllegalArgumentException("Saturation out of range.");
-        JSONObject json = new JSONObject();
-        json.put("sat",sat);
-        //System.out.println(json.toJSONString());
-        JSONObject response = handler.apiCall("lights/" + id + "/state",json,"PUT");
-        //System.out.println(response.toJSONString());
+        queuedRequest.put("sat",sat);
     }
 
     @Override
@@ -230,5 +217,34 @@ public class HueLight implements ControllableLight {
     @Override
     public float getCanonicalSat() {
         return (float)getSat()/getMaxSat();
+    }
+
+    @Override
+    public void setTransitionTime(long ttmillis) {
+        this.transitionTime = (int)(ttmillis/100);
+        queuedRequest.put("transitiontime", transitionTime);
+    }
+
+    @Override
+    public long getTransitionTime() {
+        return transitionTime;
+    }
+
+    @Override
+    public void setLive(boolean isLive) {
+        this.isLive = isLive;
+        if(isLive) flush();
+    }
+
+    @Override
+    public boolean getLive() {
+        return isLive;
+    }
+
+    @Override
+    public void flush() {
+        JSONObject response = handler.apiCall("lights/" + id + "/state",queuedRequest,"PUT");
+        queuedRequest.clear();
+        queuedRequest.put("transitiontime",transitionTime);
     }
 }
